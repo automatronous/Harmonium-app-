@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChromaForge — Visual Music Studio</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     SPLASH
+══════════════════════════════════════════════════════════ -->
+<div id="splash">
+  <div class="splash-logo">ChromaForge</div>
+  <p class="splash-sub">Visual Music Studio · Play · Compose · Explore</p>
+  <div class="splash-keys">
+    <div class="splash-key"></div><div class="splash-key"></div>
+    <div class="splash-key"></div><div class="splash-key"></div>
+    <div class="splash-key"></div>
+  </div>
+  <button id="launch-btn">Launch Studio</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     LOADING
+══════════════════════════════════════════════════════════ -->
+<div id="loading" style="display:none;">
+  <div class="load-bar-wrap"><div id="load-bar"></div></div>
+  <div id="load-text">Initialising…</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     APP
+══════════════════════════════════════════════════════════ -->
+<div id="app">
+
+  <!-- ── Header ──────────────────────────────────────────── -->
+  <header class="card header">
+
+    <div class="logo">
+      <span class="logo-icon">🎹</span> ChromaForge
+    </div>
+
+    <div class="header-right">
+
+      <!-- Key -->
+      <div class="ctrl-group">
+        <span class="ctrl-lbl">Key</span>
+        <select id="key-sel">
+          <option>C</option><option>C#</option><option>D</option>
+          <option>D#</option><option>E</option><option>F</option>
+          <option>G</option><option>G#</option><option>A</option>
+          <option>A#</option><option>B</option>
+        </select>
+      </div>
+
+      <!-- Scale -->
+      <div class="ctrl-group">
+        <span class="ctrl-lbl">Scale</span>
+        <select id="scale-sel">
+          <option value="major">Major</option>
+          <option value="natural_minor">Natural Minor</option>
+          <option value="pentatonic_major">Pentatonic Maj</option>
+          <option value="pentatonic_minor">Pentatonic Min</option>
+          <option value="blues">Blues</option>
+          <option value="dorian">Dorian</option>
+          <option value="phrygian">Phrygian</option>
+          <option value="lydian">Lydian</option>
+          <option value="mixolydian">Mixolydian</option>
+          <option value="harmonic_minor">Harmonic Minor</option>
+        </select>
+      </div>
+
+      <!-- Status: note + detected chord -->
+      <div class="status-pill">
+        <span class="lbl">Note</span>
+        <span id="note-display">—</span>
+        <span style="color:var(--txt3)">|</span>
+        <span class="lbl">Chord</span>
+        <span id="chord-display">—</span>
+      </div>
+
+      <!-- Volume -->
+      <div class="vol-wrap">
+        <span class="vol-icon">🔊</span>
+        <input type="range" id="vol" min="0" max="130" value="85" style="width:70px">
+        <span id="vol-val">85%</span>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ── Top grid: visualiser + piano  |  chord palette ── -->
+  <div class="top-grid">
+
+    <!-- Visualiser -->
+    <div class="card vis-panel">
+      <canvas id="vis-canvas"></canvas>
+      <div class="vis-tag">Spectrum Analyser</div>
+      <div id="note-history"></div>
+    </div>
+
+    <!-- Chord palette (spans 2 rows) -->
+    <div class="card chord-panel">
+      <div class="panel-hd">Chord Palette</div>
+      <div id="chord-palette"></div>
+      <div class="scale-btns">
+        <button class="ghost-btn" id="show-scale">Show Scale</button>
+        <button class="ghost-btn" id="clear-hl">Clear</button>
+      </div>
+    </div>
+
+    <!-- Piano keyboard -->
+    <div class="card piano-panel">
+      <div class="kb-hint">A·S·D·F·G·H·J·K &nbsp;·&nbsp; W·E·Y·U for sharps</div>
+      <div id="piano-keys"></div>
+    </div>
+
+  </div>
+
+  <!-- ── Sequencer transport ──────────────────────────────── -->
+  <div class="card seq-transport">
+    <button class="transport-btn" id="seq-play">▶&nbsp; Play</button>
+    <button class="transport-btn" id="seq-stop">■&nbsp; Stop</button>
+    <button class="transport-btn" id="seq-clear">✕&nbsp; Clear</button>
+
+    <div class="bpm-block">
+      <span class="bpm-lbl">BPM</span>
+      <span id="bpm-val">120</span>
+      <input type="range" id="bpm" min="40" max="240" value="120" style="width:110px">
+    </div>
+  </div>
+
+  <!-- ── Sequencer grid ──────────────────────────────────── -->
+  <div class="card seq-panel">
+    <div class="panel-hd" style="margin-bottom:10px">
+      Step Sequencer &nbsp;·&nbsp; 16 Steps &nbsp;·&nbsp; Click cells to compose
+    </div>
+    <div id="seq-grid-wrap"></div>
+  </div>
+
+  <!-- ── Bottom row ─────────────────────────────────────── -->
+  <div class="bottom-row">
+
+    <!-- Performance Recorder -->
+    <div class="card sub-card">
+      <div class="sub-card-hd">Performance Recorder</div>
+      <button id="rec-btn">⏺&nbsp; Record</button>
+      <button id="play-rec" disabled>▶&nbsp; Play Back</button>
+    </div>
+
+    <!-- Chord Progressions -->
+    <div class="card sub-card">
+      <div class="sub-card-hd">Auto Progressions</div>
+      <div class="tags" id="prog-btns"></div>
+    </div>
+
+    <!-- Sequencer Presets -->
+    <div class="card sub-card">
+      <div class="sub-card-hd">Sequencer Presets</div>
+      <div class="tags" id="preset-btns"></div>
+    </div>
+
+  </div>
+
+</div><!-- #app -->
+
+<!-- Scripts -->
+<script src="{{ url_for('static', filename='js/audio.js') }}"></script>
+<script src="{{ url_for('static', filename='js/visualizer.js') }}"></script>
+<script src="{{ url_for('static', filename='js/piano.js') }}"></script>
+<script src="{{ url_for('static', filename='js/sequencer.js') }}"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+</body>
+</html>
