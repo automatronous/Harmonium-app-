@@ -1,0 +1,95 @@
+{
+  "name": "Factory Preset",
+  "selected_instrument_id": "grand_piano",
+  "transpose": 0,
+  "soundfont_name": "default.sf2",
+  "effects": {
+    "master_gain": 0.82,
+    "reverb_room_size": 0.62,
+    "reverb_damping": 0.36,
+    "reverb_width": 0.72,
+    "reverb_level": 0.42,
+    "chorus_level": 1.4,
+    "chorus_speed": 0.38,
+    "chorus_depth": 8.0,
+    "pan": 0.0,
+    "stereo_width": 1.18,
+    "low_gain_db": 1.5,
+    "mid_gain_db": 0.0,
+    "high_gain_db": 2.0
+  },
+  "assignments": [
+    {
+      "hotkey": "1",
+      "label": "C Maj Piano Pulse",
+      "instrument_id": "grand_piano",
+      "root_midi": 60,
+      "chord_name": "major",
+      "pattern_name": "pulse",
+      "tempo_bpm": 108,
+      "bars": 1,
+      "velocity": 108,
+      "enabled": true
+    },
+    {
+      "hotkey": "2",
+      "label": "A Minor Analog Arp",
+      "instrument_id": "analog_pad",
+      "root_midi": 57,
+      "chord_name": "minor",
+      "pattern_name": "arp_up",
+      "tempo_bpm": 112,
+      "bars": 2,
+      "velocity": 92,
+      "enabled": true
+    },
+    {
+      "hotkey": "3",
+      "label": "Tanpura Drone",
+      "instrument_id": "tanpura",
+      "root_midi": 48,
+      "chord_name": "drone",
+      "pattern_name": "sustain",
+      "tempo_bpm": 72,
+      "bars": 2,
+      "velocity": 94,
+      "enabled": true
+    },
+    {
+      "hotkey": "4",
+      "label": "Teen Taal Tabla",
+      "instrument_id": "tabla",
+      "root_midi": 60,
+      "chord_name": "major",
+      "pattern_name": "teen_taal",
+      "tempo_bpm": 120,
+      "bars": 4,
+      "velocity": 112,
+      "enabled": true
+    },
+    {
+      "hotkey": "5",
+      "label": "Keherwa Dholak",
+      "instrument_id": "dholak",
+      "root_midi": 60,
+      "chord_name": "major",
+      "pattern_name": "keherwa",
+      "tempo_bpm": 112,
+      "bars": 2,
+      "velocity": 115,
+      "enabled": true
+    },
+    {
+      "hotkey": "6",
+      "label": "Brass Stab",
+      "instrument_id": "brass_section",
+      "root_midi": 65,
+      "chord_name": "power",
+      "pattern_name": "pulse",
+      "tempo_bpm": 116,
+      "bars": 1,
+      "velocity": 110,
+      "enabled": true
+    }
+  ]
+}
